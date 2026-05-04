@@ -1,66 +1,79 @@
-# sky2k8s
+# AeroTrace
 
-A **Go-based tooling utility** for deploying and managing applications on Kubernetes (k8s). Simplifies the workflow of pushing services from source to a running Kubernetes cluster.
+[![CI](https://github.com/hamdyelbatal122/AeroTrace/actions/workflows/ci.yml/badge.svg)](https://github.com/hamdyelbatal122/AeroTrace/actions/workflows/ci.yml)
+[![Go Version](https://img.shields.io/github/go-mod/go-version/hamdyelbatal122/AeroTrace)](https://github.com/hamdyelbatal122/AeroTrace/blob/main/go.mod)
+[![License](https://img.shields.io/github/license/hamdyelbatal122/AeroTrace)](LICENSE)
 
-## ✨ Features
+AeroTrace is a lightweight Go CLI that evaluates Skylark/Starlark-like `.sky` files and emits Kubernetes manifests as YAML.
 
-- 🚀 Streamlined deployment pipeline to Kubernetes
-- 🐳 Docker image build and push integration
-- ☸️ Kubernetes manifest generation and apply
-- ⚡ Single command deploy workflow
-- 🔧 Configurable via YAML
+## Features
 
-## 🛠️ Tech Stack
+- Generate Kubernetes objects from reusable `.sky` functions.
+- Built-in object output helper (`output_type`) for consistent YAML generation.
+- Supports `load(...)` across `.sky` modules.
+- Optional file output via CLI (`-o`) for CI/CD pipelines.
 
-![Go](https://img.shields.io/badge/Go-00ADD8?style=flat&logo=go&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat&logo=docker&logoColor=white)
-![Kubernetes](https://img.shields.io/badge/Kubernetes-326CE5?style=flat&logo=kubernetes&logoColor=white)
+## Requirements
 
-## ⚙️ Requirements
+- Go (version defined in `go.mod`)
 
-- Go >= 1.13
-- Docker
-- `kubectl` configured and connected to a cluster
-
-## 🚀 Getting Started
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/hamdyelbatal122/sky2k8s-master.git
-   cd sky2k8s-master
-   ```
-
-2. **Build the binary**
-   ```bash
-   go build -o sky2k8s .
-   ```
-
-3. **Run**
-   ```bash
-   ./sky2k8s --help
-   ```
-
-## 📋 Usage
+## Quick Start
 
 ```bash
-# Deploy an application to Kubernetes
-./sky2k8s deploy --image myapp:latest --namespace production
-
-# Check deployment status
-./sky2k8s status --app myapp
+git clone https://github.com/hamdyelbatal122/AeroTrace.git
+cd AeroTrace
+go mod tidy
+go build -o aerotrace .
 ```
 
-## 📁 Project Structure
+Generate YAML to stdout:
 
+```bash
+./aerotrace foo.sky
 ```
-sky2k8s-master/
-├── main.go          # Entry point
-├── cmd/             # CLI commands
-├── pkg/             # Core packages
-├── config.yaml      # Default configuration
+
+Generate YAML to file:
+
+```bash
+./aerotrace -o manifests.yaml foo.sky
+```
+
+## Development
+
+Use the provided Make targets:
+
+```bash
+make build
+make test
+make vet
+make check
+```
+
+## Project Structure
+
+```text
+.
+├── .github/workflows/ci.yml   # GitHub Actions CI
+├── k8s/v1/api.sky             # Kubernetes API helper functions
+├── foo.sky                    # Example input manifest source
+├── main.go                    # CLI and Skylark execution engine
+├── main_test.go               # Unit tests
+├── Makefile                   # Common local tasks
 └── README.md
 ```
 
-## 📄 License
+## Contributing
 
-This project is open source and available under the [MIT License](LICENSE).
+See [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Security
+
+See [SECURITY.md](.github/SECURITY.md).
+
+## Code of Conduct
+
+See [CODE_OF_CONDUCT.md](.github/CODE_OF_CONDUCT.md).
+
+## License
+
+Licensed under [LICENSE](LICENSE).
